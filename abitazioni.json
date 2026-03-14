@@ -17,7 +17,7 @@
       "Lunedì": ["Indifferenziato"],
       "Martedì": ["Organico"],
       "Mercoledì": ["Carta"],
-      "Giovedì": "[Organico"],
+      "Giovedì": ["Organico"],
       "Venerdì": ["Plastica e Metalli"],
       "Sabato": ["Vetro","Organico"],
       "Domenica": ["Nessuno"]
