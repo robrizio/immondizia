@@ -1,0 +1,26 @@
+[
+  {
+    "nome": "Casetta",
+    "calendario": {
+      "Lunedì": "Plastica",
+      "Martedì": "Organico",
+      "Mercoledì": "Carta",
+      "Giovedì": "Vetro",
+      "Venerdì": "Indifferenziata",
+      "Sabato": "Organico",
+      "Domenica": "Nessuno"
+    }
+  },
+  {
+    "nome": "Grotte",
+    "calendario": {
+      "Lunedì": "Carta",
+      "Martedì": "Indifferenziata",
+      "Mercoledì": "Organico",
+      "Giovedì": "Plastica",
+      "Venerdì": "Organico",
+      "Sabato": "Vetro",
+      "Domenica": "Nessuno"
+    }
+  }
+]
