@@ -3,56 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eco-Dashboard Rifiuti</title>
+    <title>Eco-Dashboard Pro</title>
     <style>
-        :root { --bg: #f0f2f5; --card: #ffffff; --primary: #27ae60; --secondary: #2980b9; --accent: #e67e22; --text: #2c3e50; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 15px; }
-        .container { max-width: 1000px; margin: auto; }
+        :root { 
+            --bg: #f4f7f9; --card: #ffffff; --text: #2c3e50; 
+            --marrone: #795548; --blu: #2196f3; --giallo: #fbc02d; --verde: #4caf50; --grigio: #757575;
+        }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 10px; }
+        .container { max-width: 800px; margin: auto; }
         
-        header { text-align: center; margin-bottom: 20px; }
-        .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; sticky: top; }
+        header { text-align: center; padding: 10px 0; }
+        .nav-bar { display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px; }
         
-        button { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        button:hover { opacity: 0.9; transform: translateY(-1px); }
-        button.secondary { background: var(--secondary); }
+        button { flex: 1; background: #fff; border: 1px solid #ddd; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        button:hover { background: #eee; }
+        button.today-btn { background: #27ae60; color: white; border: none; }
 
-        .calendar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-        .day-column { background: var(--card); border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid var(--primary); }
-        .day-column.tomorrow { border-top-color: var(--secondary); }
-
-        .day-header { text-align: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .day-header h2 { margin: 0; font-size: 1.4em; color: var(--text); }
-        .day-header span { font-size: 0.9em; color: #7f8c8d; text-transform: uppercase; }
-
-        .section-label { font-size: 0.75em; font-weight: 800; text-transform: uppercase; color: #95a5a6; margin: 15px 0 8px 0; display: block; letter-spacing: 1px; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+        .day-column { background: var(--card); border-radius: 15px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
         
-        .card { background: #f8f9fa; border-left: 4px solid var(--primary); padding: 12px; border-radius: 6px; margin-bottom: 10px; }
-        .card.eco { border-left-color: var(--accent); background: #fffaf5; }
-        .card-title { font-weight: bold; display: block; margin-bottom: 3px; }
-        .card-val { font-size: 1.1em; color: #c0392b; font-weight: bold; }
-        .eco-time { color: var(--accent); font-weight: bold; }
+        .day-header { text-align: center; border-bottom: 2px solid #f0f0f0; margin-bottom: 15px; padding-bottom: 10px; }
+        .day-header h2 { margin: 5px 0; font-size: 1.2em; }
+        .day-header span { font-size: 0.8em; color: #888; text-transform: uppercase; letter-spacing: 1px; }
 
-        @media (max-width: 600px) { .calendar-grid { grid-template-columns: 1fr; } }
+        .section-label { font-size: 0.7em; font-weight: bold; color: #aaa; text-transform: uppercase; margin: 15px 0 5px; display: block; }
+        
+        .house-card { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+        .house-name { font-weight: bold; font-size: 0.9em; margin-bottom: 8px; display: block; border-bottom: 1px cold #f9f9f9; }
+
+        /* Badge Rifiuti */
+        .waste-badge { 
+            display: flex; align-items: center; padding: 8px 12px; border-radius: 8px; 
+            margin-bottom: 5px; font-weight: bold; font-size: 0.85em; color: white;
+        }
+        .bg-marrone { background-color: var(--marrone); }
+        .bg-blu { background-color: var(--blu); }
+        .bg-giallo { background-color: var(--giallo); color: #000; }
+        .bg-verde { background-color: var(--verde); }
+        .bg-grigio { background-color: var(--grigio); }
+        .bg-none { background-color: #f0f0f0; color: #999; }
+
+        .eco-card { border-left: 4px solid #e67e22; background: #fffaf5; padding: 10px; border-radius: 5px; margin-bottom: 5px; }
+        .eco-name { font-weight: bold; font-size: 0.85em; display: block; }
+        .eco-time { font-size: 0.8em; color: #e67e22; }
+
+        @media (max-width: 480px) { .nav-bar button { padding: 10px 5px; font-size: 0.8em; } }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header><h1>♻️ Gestione Rifiuti</h1></header>
+    <header><h1>♻️ EcoCalendario</h1></header>
 
     <div class="nav-bar">
-        <button onclick="changeDate(-1)">❮ Ieri</button>
-        <button class="secondary" onclick="resetDate()">Oggi</button>
-        <button onclick="changeDate(1)">Domani ❯</button>
+        <button onclick="changeDate(-1)">❮ IERI</button>
+        <button class="today-btn" onclick="resetDate()">OGGI</button>
+        <button onclick="changeDate(1)">DOMANI ❯</button>
     </div>
 
     <div class="calendar-grid">
-        <div class="day-column">
-            <div class="day-header"><span id="label-0">Giorno</span><h2 id="date-0">-</h2></div>
+        <div class="day-column" id="col-0">
+            <div class="day-header"><span id="label-0">-</span><h2 id="date-0">-</h2></div>
             <div id="content-0"></div>
         </div>
-        <div class="day-column tomorrow">
-            <div class="day-header"><span id="label-1">Giorno</span><h2 id="date-1">-</h2></div>
+        <div class="day-column" id="col-1">
+            <div class="day-header"><span id="label-1">-</span><h2 id="date-1">-</h2></div>
             <div id="content-1"></div>
         </div>
     </div>
@@ -64,7 +79,7 @@
     let currentOffset = 0;
     const giorniSett = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
 
-    async function inizializza() {
+    async function init() {
         try {
             const [resAb, resEco] = await Promise.all([
                 fetch('abitazioni.json'),
@@ -74,46 +89,60 @@
             datiEcocentri = await resEco.json();
             render();
         } catch (e) {
-            console.error("Errore caricamento dati:", e);
-            alert("Errore nel caricamento dei file JSON. Controlla che siano su GitHub.");
+            alert("Errore caricamento dati JSON. Verifica i file su GitHub.");
         }
+    }
+
+    function getStyle(tipo) {
+        const t = tipo.toUpperCase();
+        if (t.includes("ORGANIC")) return { cls: "bg-marrone", ico: "🍎" };
+        if (t.includes("PLASTICA")) return { cls: "bg-blu", ico: "🥤" };
+        if (t.includes("CARTA")) return { cls: "bg-giallo", ico: "📦" };
+        if (t.includes("VETRO")) return { cls: "bg-verde", ico: "🍾" };
+        if (t.includes("SECCO") || t.includes("RESIDUO")) return { cls: "bg-grigio", ico: "🗑️" };
+        return { cls: "bg-none", ico: "⚪" };
     }
 
     function render() {
         for (let i = 0; i < 2; i++) {
             let d = new Date();
             d.setDate(d.getDate() + currentOffset + i);
-            
             const giornoNome = giorniSett[d.getDay()];
-            const dataLeggibile = d.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' });
+            const dataStr = d.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' });
 
             document.getElementById(`label-${i}`).innerText = i === 0 && currentOffset === 0 ? "Oggi" : (i === 1 && currentOffset === 0 ? "Domani" : giornoNome);
-            document.getElementById(`date-${i}`).innerText = `${giornoNome} ${dataLeggibile}`;
+            document.getElementById(`date-${i}`).innerText = `${giornoNome} ${dataStr}`;
 
-            let html = `<span class="section-label">🏠 Abitazioni</span>`;
+            let html = `<span class="section-label">Abitazioni</span>`;
             
             datiAbitazioni.forEach(casa => {
-                const tipo = casa.calendario[giornoNome] || "Nessuna info";
+                const rifiuti = casa.calendario[giornoNome] || ["Nessuno"];
+                let wasteHtml = '';
+                
+                rifiuti.forEach(r => {
+                    const style = getStyle(r);
+                    wasteHtml += `<div class="waste-badge ${style.cls}">${style.ico} ${r}</div>`;
+                });
+
                 html += `
-                    <div class="card">
-                        <span class="card-title">${casa.nome}</span>
-                        <span class="card-val">${tipo}</span>
+                    <div class="house-card">
+                        <span class="house-name">${casa.nome}</span>
+                        ${wasteHtml}
                     </div>`;
             });
 
-            html += `<span class="section-label">🏭 Ecocentri Aperti</span>`;
+            html += `<span class="section-label">Ecocentri</span>`;
             const aperti = datiEcocentri.filter(e => e.giorno === giornoNome);
-            
             if (aperti.length > 0) {
                 aperti.forEach(e => {
                     html += `
-                        <div class="card eco">
-                            <span class="card-title">${e.locazione}</span>
+                        <div class="eco-card">
+                            <span class="eco-name">📍 ${e.locazione}</span>
                             <span class="eco-time">🕒 ${e.orario}</span>
                         </div>`;
                 });
             } else {
-                html += `<p style="color: #999; font-size: 0.8em; padding-left: 10px;">Tutti chiusi</p>`;
+                html += `<p style="color:#ccc; font-size:0.8em; text-align:center;">Nessuna apertura</p>`;
             }
 
             document.getElementById(`content-${i}`).innerHTML = html;
@@ -123,7 +152,7 @@
     function changeDate(n) { currentOffset += n; render(); }
     function resetDate() { currentOffset = 0; render(); }
 
-    inizializza();
+    init();
 </script>
 
 </body>
