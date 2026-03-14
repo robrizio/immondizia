@@ -1,0 +1,6 @@
+[
+  { "locazione": "Ecocentro Grotte", "giorno": "Lunedì", "orario": "08:00 - 12:00" },
+  { "locazione": "Ecocentro Grotte", "giorno": "Mercoledì", "orario": "14:00 - 18:00" },
+  { "locazione": "Ecocentro Viterbo", "giorno": "Sabato", "orario": "09:00 - 17:00" },
+  { "locazione": "Ecocentro Viterbo", "giorno": "Martedì", "orario": "08:30 - 12:30" }
+]
