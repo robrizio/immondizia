@@ -1,6 +1,8 @@
 [
-  { "locazione": "Ecocentro Grotte", "giorno": "Lunedì", "orario": "08:00 - 12:00" },
-  { "locazione": "Ecocentro Grotte", "giorno": "Mercoledì", "orario": "14:00 - 18:00" },
-  { "locazione": "Ecocentro Viterbo", "giorno": "Sabato", "orario": "09:00 - 17:00" },
-  { "locazione": "Ecocentro Viterbo", "giorno": "Martedì", "orario": "08:30 - 12:30" }
+  { "locazione": "Ecocentro Grotte", "giorno": "Martedì", "orario": "07:00 - 12:40" },
+  { "locazione": "Ecocentro Grotte", "giorno": "Giovedì", "orario": "07:00 - 12:40" },
+  { "locazione": "Ecocentro Grotte", "giorno": "Venerdì", "orario": "07:00 - 18:20" },
+  { "locazione": "Ecocentro Poggino", "giorno": "Lunedì", "orario": "07:00 - 18:20" },
+  { "locazione": "Ecocentro Poggino", "giorno": "Mercoledì", "orario": "07:00 - 18:20" },
+  { "locazione": "Ecocentro Poggino", "giorno": "Sabato", "orario": "07:00 - 12:40" }
 ]
