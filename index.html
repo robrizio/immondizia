@@ -2,75 +2,93 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eco-Dashboard Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EcoSwipe</title>
     <style>
         :root { 
-            --bg: #f4f7f9; --card: #ffffff; --text: #2c3e50; 
+            --bg: #f8f9fa; --card: #ffffff; --text: #2c3e50; 
             --marrone: #795548; --blu: #2196f3; --giallo: #fbc02d; --verde: #4caf50; --grigio: #757575;
         }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 10px; }
-        .container { max-width: 800px; margin: auto; }
-        
-        header { text-align: center; padding: 10px 0; }
-        .nav-bar { display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px; }
-        
-        button { flex: 1; background: #fff; border: 1px solid #ddd; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        button:hover { background: #eee; }
-        button.today-btn { background: #27ae60; color: white; border: none; }
-
-        .calendar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
-        .day-column { background: var(--card); border-radius: 15px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        
-        .day-header { text-align: center; border-bottom: 2px solid #f0f0f0; margin-bottom: 15px; padding-bottom: 10px; }
-        .day-header h2 { margin: 5px 0; font-size: 1.2em; }
-        .day-header span { font-size: 0.8em; color: #888; text-transform: uppercase; letter-spacing: 1px; }
-
-        .section-label { font-size: 0.7em; font-weight: bold; color: #aaa; text-transform: uppercase; margin: 15px 0 5px; display: block; }
-        
-        .house-card { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
-        .house-name { font-weight: bold; font-size: 0.9em; margin-bottom: 8px; display: block; border-bottom: 1px cold #f9f9f9; }
-
-        /* Badge Rifiuti */
-        .waste-badge { 
-            display: flex; align-items: center; padding: 8px 12px; border-radius: 8px; 
-            margin-bottom: 5px; font-weight: bold; font-size: 0.85em; color: white;
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background: var(--bg); color: var(--text); margin: 0; padding: 0;
+            overflow-x: hidden; touch-action: pan-y;
         }
-        .bg-marrone { background-color: var(--marrone); }
-        .bg-blu { background-color: var(--blu); }
-        .bg-giallo { background-color: var(--giallo); color: #000; }
-        .bg-verde { background-color: var(--verde); }
-        .bg-grigio { background-color: var(--grigio); }
-        .bg-none { background-color: #f0f0f0; color: #999; }
+        
+        /* Layout Mobile */
+        .app-container { display: flex; flex-direction: column; height: 100vh; }
+        
+        header { padding: 15px; text-align: center; background: white; border-bottom: 1px solid #eee; }
+        h1 { margin: 0; font-size: 1.2rem; color: #27ae60; }
 
-        .eco-card { border-left: 4px solid #e67e22; background: #fffaf5; padding: 10px; border-radius: 5px; margin-bottom: 5px; }
-        .eco-name { font-weight: bold; font-size: 0.85em; display: block; }
-        .eco-time { font-size: 0.8em; color: #e67e22; }
+        .main-content { flex: 1; display: flex; flex-direction: column; padding: 10px; gap: 10px; }
 
-        @media (max-width: 480px) { .nav-bar button { padding: 10px 5px; font-size: 0.8em; } }
+        /* Blocchi Orizzontali */
+        .panel { 
+            background: var(--card); border-radius: 15px; padding: 15px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); flex: 1; display: flex; flex-direction: column;
+        }
+        .panel-top { border-bottom: 4px solid #e67e22; } /* Ecocentri */
+        .panel-bottom { border-top: 4px solid #27ae60; } /* Abitazioni */
+
+        .date-label { text-align: center; margin-bottom: 10px; }
+        .date-label span { font-size: 0.8rem; text-transform: uppercase; color: #888; font-weight: bold; }
+        .date-label h2 { margin: 0; font-size: 1.1rem; }
+
+        .section-title { font-size: 0.75rem; font-weight: bold; color: #aaa; text-transform: uppercase; margin-bottom: 10px; display: block; }
+
+        /* Dati */
+        .item-list { overflow-y: auto; flex: 1; }
+        .house-row { border-bottom: 1px solid #f0f0f0; padding: 8px 0; }
+        .house-name { font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; display: block; }
+        
+        .waste-badge { 
+            display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 20px; 
+            font-size: 0.8rem; color: white; font-weight: bold; margin-right: 5px; margin-bottom: 5px;
+        }
+        .bg-marrone { background: var(--marrone); }
+        .bg-blu { background: var(--blu); }
+        .bg-giallo { background: var(--giallo); color: #000; }
+        .bg-verde { background: var(--verde); }
+        .bg-grigio { background: var(--grigio); }
+        .bg-none { background: #eee; color: #999; }
+
+        .eco-row { background: #fffaf0; padding: 10px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #ffe0b2; }
+        .eco-info { font-size: 0.9rem; font-weight: bold; }
+        .eco-time { color: #e67e22; font-size: 0.85rem; }
+
+        /* Footer Nav */
+        .swipe-hint { text-align: center; padding: 10px; font-size: 0.7rem; color: #bdc3c7; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header><h1>♻️ EcoCalendario</h1></header>
+<div class="app-container" id="touch-zone">
+    <header>
+        <h1>♻️ EcoCalendario</h1>
+    </header>
 
-    <div class="nav-bar">
-        <button onclick="changeDate(-1)">❮ IERI</button>
-        <button class="today-btn" onclick="resetDate()">OGGI</button>
-        <button onclick="changeDate(1)">DOMANI ❯</button>
+    <div class="main-content">
+        <div class="panel panel-top">
+            <div class="date-label">
+                <span id="label-top">Oggi</span>
+                <h2 id="date-top">-</h2>
+            </div>
+            <span class="section-title">🏭 Ecocentri Aperti</span>
+            <div id="eco-list" class="item-list"></div>
+        </div>
+
+        <div class="panel panel-bottom">
+            <div class="date-label">
+                <span id="label-bottom">Domani</span>
+                <h2 id="date-bottom">-</h2>
+            </div>
+            <span class="section-title">🏠 Rifiuti Abitazioni</span>
+            <div id="house-list" class="item-list"></div>
+        </div>
     </div>
 
-    <div class="calendar-grid">
-        <div class="day-column" id="col-0">
-            <div class="day-header"><span id="label-0">-</span><h2 id="date-0">-</h2></div>
-            <div id="content-0"></div>
-        </div>
-        <div class="day-column" id="col-1">
-            <div class="day-header"><span id="label-1">-</span><h2 id="date-1">-</h2></div>
-            <div id="content-1"></div>
-        </div>
-    </div>
+    <div class="swipe-hint">⬅️ Scorri per cambiare giorno ➡️</div>
 </div>
 
 <script>
@@ -79,18 +97,35 @@
     let currentOffset = 0;
     const giorniSett = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
 
+    // GESTIONE TOUCH
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.getElementById('touch-zone').addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+
+    document.getElementById('touch-zone').addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+
+    function handleSwipe() {
+        if (touchStartX - touchEndX > 50) changeDate(1);  // Swipe Sinistra -> Avanti
+        if (touchEndX - touchStartX > 50) changeDate(-1); // Swipe Destra -> Indietro
+    }
+
     async function init() {
         try {
+            const nc = "?v=" + new Date().getTime();
             const [resAb, resEco] = await Promise.all([
-                fetch('abitazioni.json'),
-                fetch('ecocentri.json')
+                fetch('abitazioni.json' + nc),
+                fetch('ecocentri.json' + nc)
             ]);
             datiAbitazioni = await resAb.json();
             datiEcocentri = await resEco.json();
             render();
-        } catch (e) {
-            alert("Errore caricamento dati JSON. Verifica i file su GitHub.");
-        }
+        } catch (e) { alert("Errore caricamento dati."); }
     }
 
     function getStyle(tipo) {
@@ -104,63 +139,56 @@
     }
 
     function render() {
-        for (let i = 0; i < 2; i++) {
+        // Calcoliamo i due giorni
+        const days = [currentOffset, currentOffset + 1];
+        
+        days.forEach((offset, idx) => {
             let d = new Date();
-            d.setDate(d.getDate() + currentOffset + i);
+            d.setDate(d.getDate() + offset);
             const giornoNome = giorniSett[d.getDay()];
             const dataStr = d.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' });
 
-            document.getElementById(`label-${i}`).innerText = i === 0 && currentOffset === 0 ? "Oggi" : (i === 1 && currentOffset === 0 ? "Domani" : giornoNome);
-            document.getElementById(`date-${i}`).innerText = `${giornoNome} ${dataStr}`;
-
-            let html = `<span class="section-label">Abitazioni</span>`;
-            
-            datiAbitazioni.forEach(casa => {
-                const rifiuti = casa.calendario[giornoNome] || ["Nessuno"];
-                let wasteHtml = '';
-                
-                rifiuti.forEach(r => {
-                    const style = getStyle(r);
-                    wasteHtml += `<div class="waste-badge ${style.cls}">${style.ico} ${r}</div>`;
-                });
-
-                html += `
-                    <div class="house-card">
-                        <span class="house-name">${casa.nome}</span>
-                        ${wasteHtml}
-                    </div>`;
-            });
-
-            // Questo è il pezzetto di codice dentro la funzione render() che gestisce gli ecocentri
-            html += `<span class="section-label">Ecocentri</span>`;
-            
-            // Filtriamo gli ecocentri per il giorno corrente della colonna
-            const aperti = datiEcocentri.filter(e => {
-                // Usiamo trim() per rimuovere eventuali spazi invisibili nei file JSON
-                return e.giorno.trim().toLowerCase() === giornoNome.toLowerCase();
-            });
-            
-            if (aperti.length > 0) {
-                aperti.forEach(e => {
-                    html += `
-                        <div class="eco-card">
-                            <span class="eco-name">📍 ${e.locazione}</span>
-                            <span class="eco-time">🕒 ${e.orario}</span>
-                        </div>`;
-                });
-            } else {
-                html += `<p style="color:#ccc; font-size:0.8em; text-align:center; margin-top:10px;">Nessuna apertura</p>`;
+            if (idx === 0) { // Pannello Superiore (Ecocentri)
+                document.getElementById('label-top').innerText = offset === 0 ? "Oggi" : giornoNome;
+                document.getElementById('date-top').innerText = `${giornoNome} ${dataStr}`;
+                renderEcocentri(giornoNome);
+            } else { // Pannello Inferiore (Abitazioni)
+                document.getElementById('label-bottom').innerText = offset === 1 ? "Domani" : giornoNome;
+                document.getElementById('date-bottom').innerText = `${giornoNome} ${dataStr}`;
+                renderAbitazioni(giornoNome);
             }
+        });
+    }
 
-            document.getElementById(`content-${i}`).innerHTML = html;
-        }
+    function renderEcocentri(giorno) {
+        const container = document.getElementById('eco-list');
+        const aperti = datiEcocentri.filter(e => e.giorno.trim().toLowerCase() === giorno.toLowerCase());
+        container.innerHTML = aperti.length ? aperti.map(e => `
+            <div class="eco-row">
+                <div class="eco-info">📍 ${e.locazione}</div>
+                <div class="eco-time">🕒 ${e.orario}</div>
+            </div>
+        `).join('') : '<p style="text-align:center;color:#ccc;font-size:0.8rem;">Nessun ecocentro aperto</p>';
+    }
+
+    function renderAbitazioni(giorno) {
+        const container = document.getElementById('house-list');
+        container.innerHTML = datiAbitazioni.map(casa => {
+            const rifiuti = casa.calendario[giorno] || ["Nessuno"];
+            const wasteHtml = rifiuti.map(r => {
+                const s = getStyle(r);
+                return `<span class="waste-badge ${s.cls}">${s.ico} ${r}</span>`;
+            }).join('');
+            return `
+                <div class="house-row">
+                    <span class="house-name">${casa.nome}</span>
+                    <div>${wasteHtml}</div>
+                </div>`;
+        }).join('');
     }
 
     function changeDate(n) { currentOffset += n; render(); }
-    function resetDate() { currentOffset = 0; render(); }
-
     init();
 </script>
-
 </body>
 </html>
