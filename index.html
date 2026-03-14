@@ -131,8 +131,15 @@
                     </div>`;
             });
 
+            // Questo è il pezzetto di codice dentro la funzione render() che gestisce gli ecocentri
             html += `<span class="section-label">Ecocentri</span>`;
-            const aperti = datiEcocentri.filter(e => e.giorno === giornoNome);
+            
+            // Filtriamo gli ecocentri per il giorno corrente della colonna
+            const aperti = datiEcocentri.filter(e => {
+                // Usiamo trim() per rimuovere eventuali spazi invisibili nei file JSON
+                return e.giorno.trim().toLowerCase() === giornoNome.toLowerCase();
+            });
+            
             if (aperti.length > 0) {
                 aperti.forEach(e => {
                     html += `
@@ -142,7 +149,7 @@
                         </div>`;
                 });
             } else {
-                html += `<p style="color:#ccc; font-size:0.8em; text-align:center;">Nessuna apertura</p>`;
+                html += `<p style="color:#ccc; font-size:0.8em; text-align:center; margin-top:10px;">Nessuna apertura</p>`;
             }
 
             document.getElementById(`content-${i}`).innerHTML = html;
