@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco-Dashboard Rifiuti</title>
+    <style>
+        :root { --bg: #f0f2f5; --card: #ffffff; --primary: #27ae60; --secondary: #2980b9; --accent: #e67e22; --text: #2c3e50; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 15px; }
+        .container { max-width: 1000px; margin: auto; }
+        
+        header { text-align: center; margin-bottom: 20px; }
+        .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; sticky: top; }
+        
+        button { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+        button.secondary { background: var(--secondary); }
+
+        .calendar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .day-column { background: var(--card); border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid var(--primary); }
+        .day-column.tomorrow { border-top-color: var(--secondary); }
+
+        .day-header { text-align: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .day-header h2 { margin: 0; font-size: 1.4em; color: var(--text); }
+        .day-header span { font-size: 0.9em; color: #7f8c8d; text-transform: uppercase; }
+
+        .section-label { font-size: 0.75em; font-weight: 800; text-transform: uppercase; color: #95a5a6; margin: 15px 0 8px 0; display: block; letter-spacing: 1px; }
+        
+        .card { background: #f8f9fa; border-left: 4px solid var(--primary); padding: 12px; border-radius: 6px; margin-bottom: 10px; }
+        .card.eco { border-left-color: var(--accent); background: #fffaf5; }
+        .card-title { font-weight: bold; display: block; margin-bottom: 3px; }
+        .card-val { font-size: 1.1em; color: #c0392b; font-weight: bold; }
+        .eco-time { color: var(--accent); font-weight: bold; }
+
+        @media (max-width: 600px) { .calendar-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header><h1>♻️ Gestione Rifiuti</h1></header>
+
+    <div class="nav-bar">
+        <button onclick="changeDate(-1)">❮ Ieri</button>
+        <button class="secondary" onclick="resetDate()">Oggi</button>
+        <button onclick="changeDate(1)">Domani ❯</button>
+    </div>
+
+    <div class="calendar-grid">
+        <div class="day-column">
+            <div class="day-header"><span id="label-0">Giorno</span><h2 id="date-0">-</h2></div>
+            <div id="content-0"></div>
+        </div>
+        <div class="day-column tomorrow">
+            <div class="day-header"><span id="label-1">Giorno</span><h2 id="date-1">-</h2></div>
+            <div id="content-1"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let datiAbitazioni = [];
+    let datiEcocentri = [];
+    let currentOffset = 0;
+    const giorniSett = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
+
+    async function inizializza() {
+        try {
+            const [resAb, resEco] = await Promise.all([
+                fetch('abitazioni.json'),
+                fetch('ecocentri.json')
+            ]);
+            datiAbitazioni = await resAb.json();
+            datiEcocentri = await resEco.json();
+            render();
+        } catch (e) {
+            console.error("Errore caricamento dati:", e);
+            alert("Errore nel caricamento dei file JSON. Controlla che siano su GitHub.");
+        }
+    }
+
+    function render() {
+        for (let i = 0; i < 2; i++) {
+            let d = new Date();
+            d.setDate(d.getDate() + currentOffset + i);
+            
+            const giornoNome = giorniSett[d.getDay()];
+            const dataLeggibile = d.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' });
+
+            document.getElementById(`label-${i}`).innerText = i === 0 && currentOffset === 0 ? "Oggi" : (i === 1 && currentOffset === 0 ? "Domani" : giornoNome);
+            document.getElementById(`date-${i}`).innerText = `${giornoNome} ${dataLeggibile}`;
+
+            let html = `<span class="section-label">🏠 Abitazioni</span>`;
+            
+            datiAbitazioni.forEach(casa => {
+                const tipo = casa.calendario[giornoNome] || "Nessuna info";
+                html += `
+                    <div class="card">
+                        <span class="card-title">${casa.nome}</span>
+                        <span class="card-val">${tipo}</span>
+                    </div>`;
+            });
+
+            html += `<span class="section-label">🏭 Ecocentri Aperti</span>`;
+            const aperti = datiEcocentri.filter(e => e.giorno === giornoNome);
+            
+            if (aperti.length > 0) {
+                aperti.forEach(e => {
+                    html += `
+                        <div class="card eco">
+                            <span class="card-title">${e.locazione}</span>
+                            <span class="eco-time">🕒 ${e.orario}</span>
+                        </div>`;
+                });
+            } else {
+                html += `<p style="color: #999; font-size: 0.8em; padding-left: 10px;">Tutti chiusi</p>`;
+            }
+
+            document.getElementById(`content-${i}`).innerHTML = html;
+        }
+    }
+
+    function changeDate(n) { currentOffset += n; render(); }
+    function resetDate() { currentOffset = 0; render(); }
+
+    inizializza();
+</script>
+
+</body>
+</html>
